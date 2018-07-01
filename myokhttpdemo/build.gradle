@@ -35,7 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //Okhttp封装
-    compile 'com.tsy:myokhttp:1.1.4'
+    implementation 'com.tsy:myokhttp:1.1.4'
 
 
 }
