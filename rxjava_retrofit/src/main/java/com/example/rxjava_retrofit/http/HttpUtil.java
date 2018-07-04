@@ -22,6 +22,10 @@ public class HttpUtil {
         private static final HttpUtil INSTANCE = new HttpUtil();
     }
 
+    public static HttpUtil getInstance(){
+        return SingletonHolder.INSTANCE;
+    }
+
     /**
      * 添加线程管理并订阅
      */
