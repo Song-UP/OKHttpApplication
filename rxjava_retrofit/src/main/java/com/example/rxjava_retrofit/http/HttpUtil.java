@@ -34,7 +34,7 @@ public class HttpUtil {
         rx.Observable.Transformer<HttpResult<Object>, Object>
                 result = RxHelper.handleResult(event,lifecycleSubject);
         rx.Observable observable = ob.compose(result)
-                .doOnSubscribe(new Action0() {
+                .doOnSubscribe(new Action0() {   //可以进行预处理（默认在所在线程，不然就是离得最近的）
                     @Override
                     public void call() {
                         subscriber.showProgressDialog();

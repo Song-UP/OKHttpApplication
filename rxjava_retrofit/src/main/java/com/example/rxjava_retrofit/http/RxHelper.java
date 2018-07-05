@@ -16,6 +16,9 @@ import rx.subjects.PublishSubject;
 
 /**
  * Created by helin on 2016/11/9 17:02.
+ *
+ *适用于 HttpResult{ code;  Subject }, 但是写的太死了不利于后期扩展
+ *
  */
 
 public class RxHelper {
@@ -53,7 +56,7 @@ public class RxHelper {
     public static <T> Observable.Transformer<HttpResult<T>, T> handleResult(final ActivityLifeCycleEvent event, final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject) {
         return new Observable.Transformer<HttpResult<T>, T>() {
             @Override
-            public Observable<T> call(Observable<HttpResult<T>> tObservable) {
+            public Observable<T> call(Observable<HttpResult<T>> tObservable) {   //当收到  even 时，tObservable取消注册
                 Observable<ActivityLifeCycleEvent> compareLifecycleObservable =
                             lifecycleSubject.takeFirst(new Func1<ActivityLifeCycleEvent, Boolean>() {
                             @Override
