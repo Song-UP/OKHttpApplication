@@ -1,1 +1,1 @@
-include ':app', ':okhttpplus', ':myokhttpdemo', ':rxjava_retrofit'
+include ':app', ':okhttpplus', ':myokhttpdemo', ':rxjava_retrofitapp'
