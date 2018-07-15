@@ -9,6 +9,6 @@ import rx.Observable;
 
 public interface ApiService {
     @GET("/student/mobileRegister")
-    Observable<HttpResult<UserEntity>> login(@Query("phone") String phone, @Query("password") String psw);
+    Observable<UserEntity> login(@Query("phone") String phone, @Query("password") String psw);
 
 }

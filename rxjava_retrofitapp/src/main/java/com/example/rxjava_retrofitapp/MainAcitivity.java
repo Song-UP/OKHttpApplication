@@ -27,7 +27,7 @@ public class MainAcitivity extends AppCompatActivity {
 
     /** Retroift + rxjava 使用**/
     public void doGet(){
-        rx.Observable<HttpResult<UserEntity>> observable = Api.getDefault().login("15103893286", "1234");
+        rx.Observable<UserEntity> observable = Api.getDefault().login("15103893286", "1234");
         HttpUtil.getInstance().toSubscribe(observable, new BaseSubscriber<UserEntity>() {
             @Override
             protected void _onNext(UserEntity userEntity) {

@@ -1,7 +1,6 @@
 package com.example.rxjava_retrofitapp.http;
 
 import android.content.Context;
-import com.example.rxjava_retrofit.view.SimpleLoadDialog;
 import rx.Subscriber;
 
 /**

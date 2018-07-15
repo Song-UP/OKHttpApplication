@@ -10,7 +10,7 @@ import okhttp3.HttpUrl;
 import rx.functions.Action0;
 import rx.subjects.PublishSubject;
 
-public class HttpUtil {
+public class HttpUtil<T> {
     /**
      * 构造方法私有化
      */
@@ -30,7 +30,7 @@ public class HttpUtil {
     /**
      * 添加线程管理并订阅
      */
-    public void toSubscribe(rx.Observable ob, final BaseSubscriber subscriber, String cacheKey,
+    public void toSubscribe(rx.Observable<T> ob, final BaseSubscriber<T> subscriber, String cacheKey,
                             final ActivityLifeCycleEvent event, final PublishSubject<ActivityLifeCycleEvent> lifecycleSubject,
                             boolean isSave, boolean forceRefresh) {
         //数据预处理
