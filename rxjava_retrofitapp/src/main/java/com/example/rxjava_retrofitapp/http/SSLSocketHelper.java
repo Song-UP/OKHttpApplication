@@ -61,6 +61,7 @@ public class SSLSocketHelper {
                     certificateFactory.generateCertificate(context.getAssets().open(assentFile)));//打开证书
 
             SSLContext sslContext = SSLContext.getInstance("SSL");
+            //需要自定义的验证证书，要通过构造方法获取TrustManagerFactory获取了
             TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             trustManagerFactory.init(keyStore);
             sslContext.init(null,trustManagerFactory.getTrustManagers(), new SecureRandom());
