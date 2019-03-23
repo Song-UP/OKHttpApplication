@@ -1,5 +1,7 @@
 package com.example.rxjava_retrofitapp.http;
 
+import com.example.rxjava_retrofitapp.BuildConfig;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -12,53 +14,80 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Created by helin on 2016/11/10 10:28.
+ *
+ * 请求借口
+ *
+ */
+
 public class Api {
-    private static ApiService service;
+    private static ApiService SERVICE;
     /**
-     * 请求超时
+     * 请求超时时间
      */
     private static final int DEFAULT_TIMEOUT = 10000;
-    public static ApiService getDefault(){
-        if (service == null){
-            OkHttpClient.Builder httClientBuilder = new OkHttpClient.Builder();
-            httClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+
+    public static ApiService getDefault() {
+        if (SERVICE == null) {
+            //手动创建一个OkHttpClient并设置超时时间
+            final OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+            httpClientBuilder.connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+
             /**
-             * 拦截器，用于添加一些参数
+             *  拦截器
              */
-            httClientBuilder.addInterceptor(new Interceptor() {
+            httpClientBuilder.addInterceptor(new Interceptor() {
                 @Override
-                public Response intercept(Chain chain) throws IOException {
+                public okhttp3.Response intercept(Chain chain) throws IOException {
                     Request request = chain.request();
+
+//                    Request.Builder requestBuilder = request.newBuilder();
+//                    RequestBody formBody = new FormBody.Builder()
+//                            .add("1","2")
+//                            .build();
+
                     HttpUrl.Builder authorizedUrlBuilder = request.url()
                             .newBuilder()
-                            //添加手机唯一标识符，如token等
-//                            .addQueryParameter("key1","value1")
-//                            .addQueryParameter("key2", "valuel2")
+/***
+ //添加统一参数 如手机唯一标识符,token等
+ //                            .addQueryParameter("key1","value1")
+ //                            .addQueryParameter("key2", "value2")
+
+ **/
                             ;
+
                     Request newRequest = request.newBuilder()
-                            //对所有的请求添加请求头
-                            // (所有的请求都是使用这个,此时可设置上传的数据类型-----这样其实也是把请求写的太死了，不利于后期扩展)
-//                            .header("mobileFlag", "adfsaeef")
-//                            .addHeader("head2", "head2")
+                            //对所有请求添加请求头
+                            /**
+                             .header("mobileFlag", "adfsaeefe").addHeader("type", "4")
+                             **/
+                            .header("Content-Type", "application/json")
+                            .method(request.method(), request.body())
                             .url(authorizedUrlBuilder.build())
                             .build();
-                    return chain.proceed(newRequest);
+
+//                    okhttp3.Response originalResponse = chain.proceed(request);
+//                    return originalResponse.newBuilder().header("mobileFlag", "adfsaeefe").addHeader("type", "4").build();
+
+
+
+                    return  chain.proceed(newRequest);
                 }
             });
 
-            service = new Retrofit.Builder()
-                    .client(httClientBuilder.build())
+
+            if (BuildConfig.DEBUG){
+                httpClientBuilder.addInterceptor(new LoggingInterceptor());
+            }
+            SERVICE = new Retrofit.Builder()
+                    .client(httpClientBuilder.build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .baseUrl(Url.BASE_URL)
-                    .build()
-                    .create(ApiService.class);
+                    .build().create(ApiService.class);
         }
-
-        return service;
-
+        return SERVICE;
     }
 
-
 }
-
