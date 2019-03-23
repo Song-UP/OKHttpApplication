@@ -80,6 +80,9 @@ public class Api {
             if (BuildConfig.DEBUG){
                 httpClientBuilder.addInterceptor(new LoggingInterceptor());
             }
+            //通过所有Http
+            httpClientBuilder.hostnameVerifier(SSLSocketHelper.getHostnameVerifier());
+            httpClientBuilder.sslSocketFactory(SSLSocketHelper.getSSLSocketFactory());
             SERVICE = new Retrofit.Builder()
                     .client(httpClientBuilder.build())
                     .addConverterFactory(GsonConverterFactory.create())
